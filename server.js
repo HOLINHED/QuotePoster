@@ -40,6 +40,7 @@ app.get('/api', (req, res) => {
           author: data.statuses[0].entities.user_mentions[0].name,
           src: 'Twitter',
         };
+        postTweet(tweet);
         res.json(tweet);
       } else {
         fetch('https://talaikis.com/api/quotes/random')
@@ -50,6 +51,7 @@ app.get('/api', (req, res) => {
               author: content.author,
               src: 'Twitter',
             };
+            postTweet(tweet);
             res.json(tweet);
           });
       }
@@ -63,18 +65,18 @@ app.get('/api', (req, res) => {
             author: content.author,
             src: 'Talaikis API',
           };
+          postTweet(tweet);
           res.json(tweet);
         });
     }
-
-    try {
-      const post = `"${tweet.quote}" -${tweet.author}`;
-      T.post('statuses/update', { status: post }, (err, data, response) => {
-        console.log(`Posted tweet! ${post}`);
-      });
-    } catch (err) {
-      console.log(err);
-    }
+    
   });
   res.status(200);
 });
+
+function postTweet(tweet){
+    let post = `"${tweet.quote}" -${tweet.author}`;
+    T.post('statuses/update', { status: post }, (err, data, response) => {
+        console.log(`Posted tweet! ${post}`);
+    });
+}

@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Random Quotes</title>
+    <style id="e">
+        #container {
+            font-size: 20px;
+            font-family: Helvetica;
+        }
+        label {
+            font-size: 25px;
+            color: red;
+        }
+    </style>
+
+</head>
+<body>
+    <div id="loading">Loading...</div>
+    <div id="container">
+        <label for="quote">Quote: </label>
+        <p id="quote"></p>
+        <label for="author">Author: </label>
+        <p id="author"></p>
+    </div>
+    <script class="api">
+            const quote = document.getElementById('quote');
+            const author = document.getElementById('author');
+            const container = document.getElementById("container");
+            const loading = document.getElementById("loading");
+
+            container.style.display = "none";
+    
+            function getData(){
+                fetch('http://localhost:5000/api')
+                .then(function(response) {
+                    return response.json();
+                })
+                .then(function(myJson) {
+                    loading.style.display = "none";
+                    container.style.display = "";
+                    quote.innerHTML = "\"" + myJson.quote + "\"";
+                    author.innerHTML = myJson.author + " from " + myJson.src;
+                });
+            }
+            getData();
+        </script>
+</body>
+</html>

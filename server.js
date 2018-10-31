@@ -32,12 +32,22 @@ app.get('/api', (req, res) => {
   let tweet;
 
   T.get('search/tweets', { q: randomWord(), count: 1 }, (err, data, response) => {
+      
     try {
       const r = Math.random();
-      if (r < 0.3) {
+      console.log(r);
+      if (r < 0.7) {
+
+        let authorVar = "";
+        try {
+            authorVar = data.statuses[0].entities.user_mentions[0].name + " (@" + data.statuses[0].entities.user_mentions[0].screen_name + ")";
+        }catch (err){
+            authorVar = "Undefined!"
+        }
+
         tweet = {
           quote: data.statuses[0].text,
-          author: data.statuses[0].entities.user_mentions[0].name,
+          author: authorVar,
           src: 'Twitter',
         };
         postTweet(tweet);
@@ -49,7 +59,7 @@ app.get('/api', (req, res) => {
             tweet = {
               quote: content.quote,
               author: content.author,
-              src: 'Twitter',
+              src: 'Talaikis API',
             };
             postTweet(tweet);
             res.json(tweet);

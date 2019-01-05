@@ -35,7 +35,7 @@ app.get('/api', (req, res) => {
       
     try {
       const r = Math.random();
-      console.log(r);
+      //console.log(r);
       if (r < 0.7) {
 
         let authorVar = "";
@@ -50,7 +50,6 @@ app.get('/api', (req, res) => {
           author: authorVar,
           src: 'Twitter',
         };
-        postTweet(tweet);
         res.json(tweet);
       } else {
         fetch('https://talaikis.com/api/quotes/random')
@@ -61,7 +60,6 @@ app.get('/api', (req, res) => {
               author: content.author,
               src: 'Talaikis API',
             };
-            postTweet(tweet);
             res.json(tweet);
           });
       }
@@ -75,7 +73,6 @@ app.get('/api', (req, res) => {
             author: content.author,
             src: 'Talaikis API',
           };
-          postTweet(tweet);
           res.json(tweet);
         });
     }
@@ -83,10 +80,4 @@ app.get('/api', (req, res) => {
   });
   res.status(200);
 });
-
-function postTweet(tweet){
-    let post = `"${tweet.quote}" -${tweet.author}`;
-    T.post('statuses/update', { status: post }, (err, data, response) => {
-        console.log(`Posted tweet! ${post}`);
-    });
 }
